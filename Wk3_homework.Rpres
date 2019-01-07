@@ -1,0 +1,36 @@
+Week3 Plotly Presentation Home work 
+========================================================
+author: Ping Hu
+date: 01-07-2019
+autosize: true
+
+Requirement for Home Work
+========================================================
+
+For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+
+- have data and name
+- is a presentation
+- interactive, created by plotly
+
+Scattered Plot
+========================================================
+
+```{r}
+library(plotly)
+plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length, type="scatter")
+```
+
+styled scattered plot
+========================================================
+
+```{r, echo=FALSE}
+plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length,
+        marker = list(size = 10,
+                       color = 'rgba(255, 182, 193, .9)',
+                       line = list(color = 'rgba(152, 0, 0, .8)',
+                                   width = 2))) %>%
+  layout(title = 'Styled Scatter',
+         yaxis = list(zeroline = FALSE),
+         xaxis = list(zeroline = FALSE))
+```

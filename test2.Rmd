@@ -1,0 +1,32 @@
+---
+title: "HomeWork3"
+author: Ping Hu
+date: 01-08-2019
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Plotly scatter plot
+
+```{r echo=TRUE, message=FALSE}
+library(plotly)
+plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length, type="scatter")
+
+```
+
+## Styled Scatter Plot
+
+```{r echo=FALSE, message=FALSE}
+plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length,
+        marker = list(size = 10,
+                       color = 'rgba(255, 182, 193, .9)',
+                       line = list(color = 'rgba(152, 0, 0, .8)',
+                                   width = 2))) %>%
+  layout(title = 'Styled Scatter',
+         yaxis = list(zeroline = FALSE),
+         xaxis = list(zeroline = FALSE))
+```
+

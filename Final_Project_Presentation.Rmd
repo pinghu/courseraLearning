@@ -1,0 +1,119 @@
+---
+title: "Final Project"
+author: "Ping hu"
+date: "1/15/2019"
+output: slidy_presentation
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Requirement
+
+- Form of input (widget: textbox, radio button, checkbox, ...)
+- Operation on the ui input in sever.R
+- Reactive output from server calculations
+- Enough documentation for novice user.
+- Documentation at the Shiny website itself.
+- Deploy the application on Rstudio's shiny server: https://pinglearning.shinyapps.io/shiny_2_files/
+- Share application link, pasting into provided text box
+- Share your server.R and ui.R code on github
+
+## ui.R Code
+```{r ui, echo = TRUE, eval=FALSE}
+library(shiny)
+shinyUI(fluidPage(
+  titlePanel("Homewrk Project 1-12-2019 Ping Hu"),
+  pageWithSidebar(
+    headerPanel('Iris k-means clustering, please choose parameter below to see the resulted clusters'),
+    sidebarPanel(
+      selectInput('xcol', 'X Variable', names(iris)),
+      selectInput('ycol', 'Y Variable', names(iris),
+                  selected=names(iris)[[2]]),
+      numericInput('clusters', 'Cluster count', 3,min = 1, max = 9)
+    ),
+    mainPanel( plotOutput('plot1'))
+  )
+))
+```
+## server.R code
+
+
+```{r server, echo=TRUE, eval=FALSE}
+library(shiny)
+shinyServer(
+  function(input, output, session) {
+    selectedData <- reactive({
+      iris[, c(input$xcol, input$ycol)]
+    })
+    clusters <- reactive({
+      kmeans(selectedData(), input$clusters)
+    })
+    output$plot1 <- renderPlot({
+      palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
+                "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
+      par(mar = c(5.1, 4.1, 0, 1))
+      plot(selectedData(),
+           col = clusters()$cluster,
+           pch = 20, cex = 3)
+      points(clusters()$centers, pch = 4, cex = 4, lwd = 4)
+    })
+  }
+)
+```
+
+## Shiny Server Interactive Plot
+
+```{r present, echo=FALSE}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  pageWithSidebar(
+    headerPanel('Iris k-means clustering'),
+    sidebarPanel(
+      selectInput('xcol', 'X Variable', names(iris)),
+      selectInput('ycol', 'Y Variable', names(iris),
+                  selected=names(iris)[[2]]),
+      numericInput('clusters', 'Cluster count', 3,
+                   min = 1, max = 9)
+    ),
+    mainPanel(
+      plotOutput('plot1')
+    )
+  )
+)
+
+
+# Define server logic required to draw a histogram
+server <- function(input, output, session) {
+    
+    # Combine the selected variables into a new data frame
+    selectedData <- reactive({
+      iris[, c(input$xcol, input$ycol)]
+    })
+    
+    clusters <- reactive({
+      kmeans(selectedData(), input$clusters)
+    })
+    
+    output$plot1 <- renderPlot({
+      palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
+                "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
+      
+      par(mar = c(5.1, 4.1, 0, 1))
+      plot(selectedData(),
+           col = clusters()$cluster,
+           pch = 20, cex = 3)
+      points(clusters()$centers, pch = 4, cex = 4, lwd = 4)
+    })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+
+```
+

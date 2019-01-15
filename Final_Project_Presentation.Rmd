@@ -20,6 +20,9 @@ knitr::opts_chunk$set(echo = FALSE)
 - Deploy the application on Rstudio's shiny server: https://pinglearning.shinyapps.io/shiny_2_files/
 - Share application link, pasting into provided text box
 - Share your server.R and ui.R code on github
+https://github.com/pinghu/courseraLearning
+- Interactive Presentation Located at:
+https://pinglearning.shinyapps.io/Final_Project_Presentation/_w_14b7b9f2/#(1)
 
 ## ui.R Code
 ```{r ui, echo = TRUE, eval=FALSE}
